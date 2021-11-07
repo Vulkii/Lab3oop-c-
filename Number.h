@@ -28,6 +28,8 @@ namespace Prog3 {
         Number(long number); // Const by long
         Number(char* ByChar);
         Number(const Number&);
+        Number(Number&&);
+
 
         // Setters
         Number& SetByLong(long ByLong);

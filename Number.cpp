@@ -118,7 +118,9 @@ namespace Prog3 {
 		value[SIZE_OF_ARRAY] = '\0';
 	}
 
-
+	Number::Number(Number&& num) : SIZE_OF_ARRAY(num.SIZE_OF_ARRAY) {
+		num.value = nullptr;
+	}
 
 
 	// Setters
@@ -160,19 +162,30 @@ namespace Prog3 {
 		value[size] = '\0';
 		return *this;
 	}
+
+
 	Number& Number::SetByChar(char *ByChar) { 
 		int len = strlen(ByChar);
 		int i = 1;
+		int checker_of_digit =0;
 		int size = 0;
 		int negative = 0;
 		int number = 0;
+
 		if (ByChar[0] == '-') { 
 			negative = 1;
+			checker_of_digit = 1;
 		}
 		else {
 			negative = 0;
+			checker_of_digit = 0;
 		}
-		for (int j = len; j > 0; j--) { 
+		for (checker_of_digit; checker_of_digit < len; checker_of_digit++) {
+			if (!isdigit(ByChar[checker_of_digit])) {
+				throw std::logic_error("Incorrect string!");
+			}
+		}
+		for (int j = len; j > negative; j--) {
 			number = number + (i * (ByChar[j - 1] - '0'));
 			size = size + 1;
 			i = i * 10;
@@ -180,6 +193,7 @@ namespace Prog3 {
 		if (number >= ((pow(2, MAXSIZE) / 2) - 1)) {
 			throw std::logic_error("Too big number!");
 		}
+		std::cout << number;
 		for (int i = 0; i < MAXSIZE - 1; i++) {
 			if (negative == 0) {
 				if (number <= ((pow(2, i) / 2) - 1)) {
@@ -408,16 +422,11 @@ namespace Prog3 {
 				SumCode.Additional[i] = '0';
 			}
 		}
-		for (int i = real_size; i > -1; i--) {
-			std::cout << SumCode.Additional[i];
-		}
-		std::cout << std::endl;
 		result = 0;
 		degree_of_two = 0;
 		if (SumCode.Additional[0] != '1') {
 			for (int i = real_size-1; i > 0; i--) {
 				result = result + ((SumCode.Additional[i] - '0') * pow(2, degree_of_two));
-				std::cout << result << std::endl;
 				degree_of_two++;
 			}
 		}
